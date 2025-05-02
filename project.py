@@ -11,7 +11,12 @@ cursor.execute(testQuery)
 for item in cursor:
     print(item)
 
+
 cursor.close()
 
 connection.close()
+
+"""
+Creating a code for check balance, deposit, withdraw, create account, delete account, modify account. SET 
+"""
 

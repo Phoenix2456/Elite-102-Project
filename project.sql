@@ -1,2 +1,2 @@
-INSERT INTO account
-VALUES()
+-- Modify account
+UPDATE 
