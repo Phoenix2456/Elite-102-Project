@@ -12,15 +12,16 @@ WHERE id = 1
 DELETE FROM accounts WHERE 
 
 
--- Deposite
-
+-- Deposit
+INSERT INTO account (check_balance)
+VALUES (value1, value2, value3, ...);
 
 -- Withdraw
 
 
 -- Create Account
-INSERT INTO account (email, column2, column3, ...)
-VALUES (value1, value2, value3, ...);
+INSERT INTO account (email, passcode)
+VALUES ("Briane@gmail.com", "Dejavu");
 
 
 -- Existing Account
