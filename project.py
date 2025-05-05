@@ -30,11 +30,15 @@ insert_account()
 def modify():
     change_email = input("Do you want to change your email?")
     change_password = input("Do you want to change your password?")
+    if change_email and change_password == "yes":
+        email = input("Enter your new email: ")
+        passcode = str(input("Enter your new password: "))
     if change_email == "yes":
         email = input("Enter your new email: ")
-    if change_password == "yes":
-        passcode = str(input("Enter your new password: "))
-    cursor.execute("UPDATE account SET a = %s WHERE account_number = %s, AND passcode = %s", (change_email, change_password))
+    else:
+        if change_password == "yes":
+            passcode = str(input("Enter your new password: "))
+    cursor.execute("UPDATE account SET email = %s WHERE email = %s AND passcode = %s", (change_email, change_password))
     connection.commit()
     return(email, passcode)
 # modify()
