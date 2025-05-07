@@ -17,14 +17,42 @@ def insert_account():
     account_number = input("Enter your account number: ")
     email = input("Enter your email: ")
     passcode = str(input("Enter your password: "))
-    check_balance = 000000.00
-    query = ("INSERT INTO account (name, account_number, passcode, check_balance) VALUES (%s, %s, %s, %s)")
-    values = (name, account_number, passcode, check_balance)
+    check_balance = 0.0
+    query = "INSERT INTO account (name, account_number, email, passcode, check_balance) VALUES (%s, %s, %s, %s, %s)"
+    values = (name, account_number, email, passcode, check_balance)
     cursor.execute(query, values)
     connection.commit()
-    return check_balance, email, passcode
+    return account_number
 
-insert_account()
+# Deposit 
+def deposit(account_number):
+    check = input("Do you want to deposit to your bank? ")
+    if check == "yes":
+        deposit_amount = float(input("How much? "))
+        print(f"You have deposited ${deposit_amount} into your bank.")
+    cursor.execute("UPDATE account SET check_balance = check_balance + %s WHERE account_number = %s", (deposit_amount, account_number))
+    connection.commit()
+
+# Withdraw 
+def withdraw(account_number):
+    check = input("Do you want to withdraw from your bank? ")
+    if check == "yes":
+        withdraw_amount = float(input("How much? "))
+    cursor.execute("SELECT check_balance FROM account WHERE account_number = %s", (account_number))
+    result = cursor.fetchone()
+    if result:
+        balance = result[0]
+    if withdraw_amount <= balance:
+        cursor.execute("UPDATE account SET check_balance = check_balance - %s WHERE account_number = %s", (withdraw_amount, account_number))
+        connection.commit()
+    else: 
+        print("Insufficient Balance")
+
+# Check Balance 
+def account_balance():
+    check_balance = check_balance
+    cursor.execute("SELECT check_balance FROM account WHERE check_balance = %s", (check_balance))
+    return check_balance
 
 # Modify Account
 def modify():
@@ -41,35 +69,9 @@ def modify():
     cursor.execute("UPDATE account SET email = %s WHERE email = %s AND passcode = %s", (change_email, change_password))
     connection.commit()
     return(email, passcode)
-# modify()
-
-# Withdraw 
-def withdraw(insert_account, check_balance):
-    check = input("Do you want to withdraw from your bank? ")
-    if check == "yes":
-        withdraw_amount = int(input("How much? "))
-        check_balance = check_balance - withdraw_amount
-    if check_balance <= 0:
-        print("There is no cash left to withdraw")
-    cursor.execute("SELECT check_balance FROM account WHERE check_balance = %s", (check_balance))
-    return check_balance
-withdraw()
-
-# Deposit 
-def deposit(insert_account):
-    check = input("Do you want to deposit to your bank? ")
-    if check == "yes":
-        deposit_amount = int(input("How much? "))
-        check_balance = check_balance + deposit_amount
-    cursor.execute("UPDATE account SET check_balance = %s WHERE check_balance = %s", (check_balance))
-    connection.commit()
-    return check_balance
   
-# Check Balance 
-def account_balance():
-    check_balance = check_balance
-    cursor.execute("SELECT check_balance FROM account WHERE check_balance = %s", (check_balance))
-    return check_balance
+# Log in
+
 
 # # Deleten Account
 # def delete_account():
