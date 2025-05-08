@@ -28,8 +28,8 @@ def insert_account():
 def deposit(account_number):
     check = input("Do you want to deposit to your bank? ")
     if check.lower() == "yes":
-    deposit_amount = float(input("How much? "))
-    cursor.execute("UPDATE account SET check_balance = check_balance + %s WHERE account_number = %s", (deposit_amount, account_number))
+    deposit = float(input("How much? "))
+    cursor.execute("UPDATE account SET check_balance = check_balance + %s WHERE account_number = %s", (deposit, account_number))
     connection.commit()
 
 # Withdraw 
