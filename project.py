@@ -27,26 +27,28 @@ def insert_account():
 # Deposit 
 def deposit(account_number):
     check = input("Do you want to deposit to your bank? ")
-    if check == "yes":
-        deposit_amount = float(input("How much? "))
-        print(f"You have deposited ${deposit_amount} into your bank.")
+    if check.lower() == "yes":
+    deposit_amount = float(input("How much? "))
     cursor.execute("UPDATE account SET check_balance = check_balance + %s WHERE account_number = %s", (deposit_amount, account_number))
     connection.commit()
 
 # Withdraw 
 def withdraw(account_number):
     check = input("Do you want to withdraw from your bank? ")
-    if check == "yes":
+    if check.lower() == "yes":
         withdraw_amount = float(input("How much? "))
-    cursor.execute("SELECT check_balance FROM account WHERE account_number = %s", (account_number))
-    result = cursor.fetchone()
-    if result:
-        balance = result[0]
-    if withdraw_amount <= balance:
-        cursor.execute("UPDATE account SET check_balance = check_balance - %s WHERE account_number = %s", (withdraw_amount, account_number))
-        connection.commit()
-    else: 
-        print("Insufficient Balance")
+        cursor.execute("SELECT check_balance FROM account WHERE account_number = %s", (account_number,))
+        result = cursor.fetchone()
+        if result:
+            balance = result[0]
+            if withdraw_amount <= balance:
+                cursor.execute("UPDATE account SET check_balance = check_balance - %s WHERE account_number = %s", (withdraw_amount, account_number))
+                connection.commit()
+                print("Withdrawal successful.")
+            else:
+                print("Insufficient balance.")
+        else:
+            print("Account not found.")
 
 # Check Balance 
 def account_balance(account_number):
@@ -54,56 +56,15 @@ def account_balance(account_number):
     cursor.execute("SELECT check_balance FROM account WHERE check_balance = %s", (check_balance))
 
 
-# Log in
-def log_in(account_number):
+def log_in():
     email = input("Enter your email: ")
-    passcode = str(input("Enter your password: "))
-    cursor.execute("UPDATE account SET email AND passcode WHERE account_number = %s", (email, passcode))
+    passcode = input("Enter your password: ")
+    cursor.execute("SELECT account_number FROM account WHERE email = %s AND passcode = %s", (email, passcode))
+    result = cursor.fetchone()
+    if result:
+        print("Login successful!")
 
-# # Modify Account
-# def modify():
-#     change_email = input("Do you want to change your email?")
-#     change_password = input("Do you want to change your password?")
-#     if change_email and change_password == "yes":
-#         email = input("Enter your new email: ")
-#         passcode = str(input("Enter your new password: "))
-#     if change_email == "yes":
-#         email = input("Enter your new email: ")
-#     else:
-#         if change_password == "yes":
-#             passcode = str(input("Enter your new password: "))
-#     cursor.execute("UPDATE account SET email = %s WHERE email = %s AND passcode = %s", (email, passcode))
-#     connection.commit()
-#     return(email, passcode)
-  
-
-
-
-
-# # Deleten Account
-# def delete_account():
-#     ask = input("Do you want to delete your account? ")
-#     if ask == "yes":
-#         cursor.execute("DELETE FROM account WHERE account_number = %s AND pin = %s", (new_name, account_number))
-
-
-
-
-# Delete Account
-# def delete_account(user):
-#     delete_account = input("Do you want to delete your account? ")
-#     if delete_account == "yes":
-#         email = 
-#     cursor.execute("DELETE FROM account WHERE account_number = %s AND pin = %s", (new_name, account_number))
-#     connection.commit()
-
-
-# cursor.close()
-
-# connection.close()
-
-
-# Withdraw = cursor.execute("SELECT balance FROM account WHERE account_number = %s AND pin = %s", (account, pin))
-# Deposit =  cursor.execute("UPDATE account SET name = %s WHERE account_number = %s", (change_email, change_password)) connection.commit()
-# Check Balance = cursor.execute("SELECT check_balance FROM account WHERE account_number = %s AND pin = %s", (account, pin))
-# Delete account = "DELETE FROM account WHERE account_number = %s AND pin = %s"
+        return result[0]
+    else:
+        print("Invalid email or password.")
+        return None
