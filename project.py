@@ -49,28 +49,35 @@ def withdraw(account_number):
         print("Insufficient Balance")
 
 # Check Balance 
-def account_balance():
+def account_balance(account_number):
     check_balance = check_balance
     cursor.execute("SELECT check_balance FROM account WHERE check_balance = %s", (check_balance))
-    return check_balance
 
-# Modify Account
-def modify():
-    change_email = input("Do you want to change your email?")
-    change_password = input("Do you want to change your password?")
-    if change_email and change_password == "yes":
-        email = input("Enter your new email: ")
-        passcode = str(input("Enter your new password: "))
-    if change_email == "yes":
-        email = input("Enter your new email: ")
-    else:
-        if change_password == "yes":
-            passcode = str(input("Enter your new password: "))
-    cursor.execute("UPDATE account SET email = %s WHERE email = %s AND passcode = %s", (change_email, change_password))
-    connection.commit()
-    return(email, passcode)
-  
+
 # Log in
+def log_in(account_number):
+    email = input("Enter your email: ")
+    passcode = str(input("Enter your password: "))
+    cursor.execute("UPDATE account SET email AND passcode WHERE account_number = %s", (email, passcode))
+
+# # Modify Account
+# def modify():
+#     change_email = input("Do you want to change your email?")
+#     change_password = input("Do you want to change your password?")
+#     if change_email and change_password == "yes":
+#         email = input("Enter your new email: ")
+#         passcode = str(input("Enter your new password: "))
+#     if change_email == "yes":
+#         email = input("Enter your new email: ")
+#     else:
+#         if change_password == "yes":
+#             passcode = str(input("Enter your new password: "))
+#     cursor.execute("UPDATE account SET email = %s WHERE email = %s AND passcode = %s", (email, passcode))
+#     connection.commit()
+#     return(email, passcode)
+  
+
+
 
 
 # # Deleten Account
